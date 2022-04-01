@@ -1,18 +1,17 @@
 package com.alex.restapi.tictactoe.utils;
 
 
-import com.alex.restapi.tictactoe.entity.GamePlay;
-import com.alex.restapi.tictactoe.entity.GameResult;
-import com.alex.restapi.tictactoe.entity.Player;
+import com.alex.restapi.tictactoe.entity.*;
 
 
 public class Util {
 
     private char symbol;   // символ Х или 0
-    private Player winnerPlay ; // победитель
-    private String winner; // победитель
-    private GameResult gameResult = new GameResult();
-    private GamePlay gamePlay = new GamePlay();
+    public static Player winnerPlay ; // победитель
+    public GameResult gameResult = new GameResult();
+    public GamePlay gamePlay = new GamePlay();
+    public Step step = new Step();
+    public Game game = new Game();
     private boolean isNext = true; // флаг результата
     public static char[][] boardView = {
             {'|', '1', '|', '2', '|', '3', '|'},

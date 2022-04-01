@@ -1,13 +1,13 @@
 package com.alex.restapi.tictactoe.controller;
 
 
+import com.alex.restapi.tictactoe.entity.*;
+import com.alex.restapi.tictactoe.repository.GameRepository;
+import com.alex.restapi.tictactoe.repository.GameResultRepository;
+import com.alex.restapi.tictactoe.repository.PlayerRepository;
+import com.alex.restapi.tictactoe.repository.StepRepository;
 import com.alex.restapi.tictactoe.utils.Util;
-import com.alex.tictactoe.model.*;
-import com.alex.tictactoe.repository.*;
-import com.alex.tictactoe.view.GameBoard;
-import com.alex.tictactoe.view.View;
-import com.alex.tictactoe.view.ViewResponse;
-import com.alex.tictactoe.view.ViewResponseParse;
+import com.alex.restapi.tictactoe.view.ViewResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +26,6 @@ public class RestApiController {
     @Autowired
     GameRepository gameRepository;
 
-    GamePlay gameplay = new GamePlay();
-    Step step = new Step();
-    GameResult gameResult = new GameResult();
-    Game game = new Game();
     Util util = new Util();
 
     @RequestMapping(value = "/gameplay", method = RequestMethod.GET)
@@ -40,25 +36,22 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/onePlayer", method = RequestMethod.POST)
     public List<Player> getOnePlayer (@RequestBody Player player){
-        Model.onePlay = player;
-        gameplay.getPlayers().add(Model.onePlay);
-        Model.firstPlayer =  Model.onePlay.getName();
+        util.gamePlay.getPlayers().add(player);
+
         playerRepository.save(player);
-        return gameplay.getPlayers();
+        return util.gamePlay.getPlayers();
     }
 
     @RequestMapping(value = "/gameplay/twoPlayer", method = RequestMethod.POST)
     public List<Player> getTwoPlayer (@RequestBody Player player){
-        Model.twoPlay = player;
-        gameplay.getPlayers().add(Model.twoPlay);
-        Model.secondPlayer =  Model.twoPlay.getName();
+        util.gamePlay.getPlayers().add(player);
         playerRepository.save(player);
-        return gameplay.getPlayers();
+        return util.gamePlay.getPlayers();
     }
 
     @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
     public char[][] getGame (){
-        return Model.boardView;
+        return util.boardView;
     }
 
     @RequestMapping(value = "/gameplay/game/{currentPlayer}/{position}", method = RequestMethod.GET)
