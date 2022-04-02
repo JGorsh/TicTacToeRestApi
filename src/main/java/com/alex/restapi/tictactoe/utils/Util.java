@@ -93,18 +93,18 @@ public class Util {
         return new ViewResponse(player, message);
     }
 
-//    //сброс переменных при выборе: продолжить игру
-//    public static void initBoard() {
-//        char[][] boardViewClean = {
-//                {'|', '1', '|', '2', '|', '3', '|'},
-//                {' ', ' ', ' ', ' ', ' ', ' ', ' '},
-//                {'|', '4', '|', '5', '|', '6', '|'},
-//                {' ', ' ', ' ', ' ', ' ', ' ', ' '},
-//                {'|', '7', '|', '8', '|', '9', '|'}
-//        };
-//        boardView = boardViewClean;
-//        moveList = new ArrayList<>();
-//        com.alex.tictactoe.model.Model.stepList = new ArrayList<>();
-//    }
+    //сброс переменных при выборе: продолжить игру
+    public static void initBoard() {
+        char[][] boardViewClean = {
+                {'|', '1', '|', '2', '|', '3', '|'},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {'|', '4', '|', '5', '|', '6', '|'},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {'|', '7', '|', '8', '|', '9', '|'}
+        };
+        boardView = boardViewClean;
+        winnerPlay = null;
+        count=0;
+    }
 
 }

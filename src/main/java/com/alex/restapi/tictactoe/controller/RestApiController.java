@@ -5,6 +5,7 @@ import com.alex.restapi.tictactoe.entity.*;
 import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
 import com.alex.restapi.tictactoe.view.ViewResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +29,14 @@ public class RestApiController {
 
     Game game;
     GamePlay gamePlay;
+    GameResult gameResult;
+    Step step;
+    Player player;
 
 
-    @RequestMapping(value = "/gameplay", method = RequestMethod.GET)
+    @RequestMapping(value = "/gameplay", method = RequestMethod.POST)
     public GamePlay getGameplay (){
         gamePlay = new GamePlay();
-        game = new Game();
-        Game gameSave = gameService.saveGame(game);
-        gamePlay.setGame(gameSave);
         gamePlayService.save(gamePlay);
         return gamePlay;
     }
@@ -45,15 +46,26 @@ public class RestApiController {
         return gamePlayService.getGamePlayById(id);
     }
 
-    @RequestMapping(value = "/gameplay/players", method = RequestMethod.POST)
-    public List<Player> savePlayers (@RequestBody Player player){
+    @RequestMapping(value = "/gameplay/player/{playerName}", method = RequestMethod.GET)
+    public Player savePlayers (@PathVariable String playerName){
+        if(player==null){
+            player = new Player(playerName,'X');
+        }
+        else player = new Player(playerName,'0');
+
+        player.setGamePlay(gamePlay);
         playerService.savePlayer(player);
-        return playerService.getAllPlayers();
+        return player;
     }
 
     @RequestMapping(value = "/gameplay/players/{id}", method = RequestMethod.GET)
     public Player getPlayer(@PathVariable Long id) {
         return playerService.getPlayer(id);
+    }
+
+    @RequestMapping(value = "/gameplay/players", method = RequestMethod.GET)
+    public List<Player> getAllPlayers() {
+        return playerService.getAllPlayers();
     }
 
     @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
@@ -66,24 +78,34 @@ public class RestApiController {
 
         Player player = playerService.getPlayer(currentPlayerId);
         Util.choicePosition(Util.boardView, position,player);
-        stepService.saveStep(player,position);
+
+        game = new Game();
+
+        step = new Step(player, position);
+        step.setGame(game);
+        stepService.saveStep(step);
+        gameService.saveGame(game);
+
+        gamePlay.setGame(game);
+        gamePlayService.save(gamePlay);
+
         ViewResponse viewResponse = Util.progressHandler(player);
         if (Util.winnerPlay!=null){
-            gamePlay.setGameResult(gameResultService.save(gameResultService.create(player)));
+            gameResult = gameResultService.save(gameResultService.create(player));
+            gamePlay.setGameResult(gameResult);
+            gamePlayService.save(gamePlay);
         }
+
         return viewResponse;
     }
-//
-//    @RequestMapping(value = "/gameplay/init", method = RequestMethod.GET)
-//    public String initGame () {
-//        Model.initBoard();
-//        gameplay= new GamePlay();
-//        Model.winnerPlay = null;
-//        stepRepository.deleteAll();
-//        View.responseMessageView = "Продолжаем игру!";
-//        return "Можно начать новую игру!";
-//    }
-//
+
+    @RequestMapping(value = "/gameplay/init", method = RequestMethod.GET)
+    public String initGame () {
+        Util.initBoard();
+        player = null;
+        return "Можно начать новую игру!";
+    }
+
 //    @RequestMapping(value = "/gameplay/archive", method = RequestMethod.POST)
 //    public ViewResponseParse getOnePlayer (@RequestBody Root root){
 //

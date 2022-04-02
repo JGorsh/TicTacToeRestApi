@@ -6,10 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table
 public class Game {
@@ -20,8 +19,28 @@ public class Game {
 
     @JsonProperty("Step")
     @OneToMany(mappedBy = "game")
-    public List<Step> stepList; // список шагов
+    public List<Step> stepList = new ArrayList<>(); // список шагов
+
+    @OneToOne(cascade = CascadeType.ALL,
+            mappedBy = "game")
+    private GamePlay gamePlay;
 
     public Game() {
+    }
+
+    public List<Step> getStepList() {
+        return stepList;
+    }
+
+    public void setStepList(List<Step> stepList) {
+        this.stepList = stepList;
+    }
+
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
+
+    public void setGamePlay(GamePlay gamePlay) {
+        this.gamePlay = gamePlay;
     }
 }

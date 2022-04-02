@@ -3,14 +3,11 @@ package com.alex.restapi.tictactoe.entity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
-import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table
 @JsonAutoDetect
@@ -27,9 +24,17 @@ public class Player {
     public char symbol;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "gamePlay_id")
     private GamePlay gamePlay;
+
+    public Player() {
+    }
+
+    public Player(String name, char symbol) {
+        this.name = name;
+        this.symbol = symbol;
+    }
 
     public Long getId() {
         return id;
@@ -54,4 +59,13 @@ public class Player {
     public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
+
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
+
+    public void setGamePlay(GamePlay gamePlay) {
+        this.gamePlay = gamePlay;
+    }
+
 }
