@@ -43,26 +43,23 @@ public class RestApiController {
         return playerService.getAllPlayers();
     }
 
+    @RequestMapping(value = "/gameplay/players/{id}", method = RequestMethod.GET)
+    public Player getPlayer(@PathVariable Long id) {
+        return playerService.getPlayer(id);
+    }
+
     @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
     public char[][] getGame (){
         return util.boardView;
     }
 
-//    @RequestMapping(value = "/gameplay/game/{currentPlayer}/{position}", method = RequestMethod.GET)
-//    public ViewResponse getGamePosition (@PathVariable String currentPlayer, @PathVariable int position){
-//
-//        if (currentPlayer.equals(Model.firstPlayer)){
-//             step = new Step(Model.onePlay,position,game);
-//
-//
-//             stepRepository.save(step);
-//        }
-//        else if (currentPlayer.equals(Model.secondPlayer)){
-//             step = new Step(Model.twoPlay, position,game);
-//
-//             stepRepository.save(step);
-//        }
-//
+    @RequestMapping(value = "/gameplay/game/{currentPlayerId}/{position}", method = RequestMethod.GET)
+    public ViewResponse getGamePosition (@PathVariable Long currentPlayerId, @PathVariable int position){
+        Player player = playerService.getPlayer(currentPlayerId);
+        util.choicePosition(util.boardView, position,player);
+        return stepService.setStep(player,position);
+
+
 //        Model.stepList.add(step);
 //        Model.choicePosition(Model.boardView, position, currentPlayer);
 //        Model.moveList.add(position);
@@ -112,7 +109,7 @@ public class RestApiController {
 //
 //        ViewResponse view = new ViewResponse();
 //        return view;
-//    }
+    }
 //
 //    @RequestMapping(value = "/gameplay/init", method = RequestMethod.GET)
 //    public String initGame () {

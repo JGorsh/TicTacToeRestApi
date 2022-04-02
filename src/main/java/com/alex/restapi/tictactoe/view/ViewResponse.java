@@ -11,14 +11,13 @@ import lombok.Setter;
 public class ViewResponse {
 
     private char[][] boardView;
-    private Player winnerPlay;
+    private Player player;
     private String responseMessage;
-    Util util = new Util();
 
-    public ViewResponse() {
-        this.boardView = util.boardView;
-        //this.responseMessage = View.responseMessageView;
-        this.winnerPlay = util.winnerPlay;
+    public ViewResponse(Player player) {
+        this.player = player;
+        this.boardView = Util.boardView;
+
 
     }
 }

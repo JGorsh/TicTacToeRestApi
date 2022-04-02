@@ -18,24 +18,24 @@ public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int id;
+    public Long id;
 
     @Column
     public String name;
 
     @Column
-    public String symbol;
+    public char symbol;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gamePlay_id")
     private GamePlay gamePlay;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,11 +47,11 @@ public class Player {
         this.name = name;
     }
 
-    public String getSymbol() {
+    public char getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
 }

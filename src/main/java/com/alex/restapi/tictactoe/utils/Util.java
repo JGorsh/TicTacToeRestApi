@@ -24,7 +24,7 @@ public class Util {
     }; // форма поля
 
     //метод проверки массива на соответствие выиграшных вариантов
-    public Boolean checkProgress(char symbol) {
+    public static Boolean checkProgress(char symbol) {
         if ((boardView[0][1] == symbol && boardView[0][3] == symbol && boardView[0][5] == symbol) ||
                 (boardView[2][1] == symbol && boardView[2][3] == symbol && boardView[2][5] == symbol) ||
                 (boardView[4][1] == symbol && boardView[4][3] == symbol && boardView[4][5] == symbol) ||
@@ -42,9 +42,9 @@ public class Util {
 
 
     //метод обработки выбора позиции
-    public void choicePosition(char[][] boardView, int position, Player player) {
+    public static void choicePosition(char[][] boardView, int position, Player player) {
 
-        char symbol = player.getSymbol().charAt(0);
+        char symbol = player.getSymbol();
 
         switch (position) {
             case 1:
