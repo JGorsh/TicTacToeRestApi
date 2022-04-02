@@ -2,10 +2,10 @@ package com.alex.restapi.tictactoe.controller;
 
 
 import com.alex.restapi.tictactoe.entity.*;
-import com.alex.restapi.tictactoe.repository.*;
+import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
 import com.alex.restapi.tictactoe.view.ViewResponse;
-import org.apache.catalina.connector.Response;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,42 +16,31 @@ import java.util.List;
 public class RestApiController {
 
     @Autowired
-    PlayerRepository playerRepository;
+    PlayerService playerService;
     @Autowired
-    StepRepository stepRepository;
+    StepService stepService;
     @Autowired
-    GameResultRepository gameResultRepository;
+    GameResultService gameResultService;
     @Autowired
-    GameRepository gameRepository;
+    GameService gameService;
     @Autowired
-    GamePlayRepository gamePlayRepository;
+    GamePlayService gamePlayService;
+    Util util;
 
-
-    Util util = new Util();
-
-    @RequestMapping(value = "/gameplay", method = RequestMethod.GET)
-    public GamePlay getGameplay (){
-        return util.gamePlay;
-    }
+//    @RequestMapping(value = "/gameplay", method = RequestMethod.GET)
+//    public GamePlay getGameplay (){
+//        return util.gamePlay;
+//    }
 
     @RequestMapping(value = "/gameplay/{id}", method = RequestMethod.GET)
-    public GamePlay getGameplay (@PathVariable Long id){
-        return util.gamePlay;
+    public GamePlay getGameplayById (@PathVariable Long id){
+        return gamePlayService.getGamePlayById(id);
     }
 
-    @RequestMapping(value = "/gameplay/onePlayer", method = RequestMethod.POST)
-    public List<Player> getOnePlayer (@RequestBody Player player){
-        util.gamePlay.getPlayers().add(player);
-
-        playerRepository.save(player);
-        return util.gamePlay.getPlayers();
-    }
-
-    @RequestMapping(value = "/gameplay/twoPlayer", method = RequestMethod.POST)
-    public List<Player> getTwoPlayer (@RequestBody Player player){
-        util.gamePlay.getPlayers().add(player);
-        playerRepository.save(player);
-        return util.gamePlay.getPlayers();
+    @RequestMapping(value = "/gameplay/players", method = RequestMethod.POST)
+    public List<Player> savePlayers (@RequestBody Player player){
+        playerService.savePlayer(player);
+        return playerService.getAllPlayers();
     }
 
     @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)

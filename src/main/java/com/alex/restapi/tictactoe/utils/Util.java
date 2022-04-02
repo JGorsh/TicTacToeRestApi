@@ -2,6 +2,8 @@ package com.alex.restapi.tictactoe.utils;
 
 
 import com.alex.restapi.tictactoe.entity.*;
+import com.alex.restapi.tictactoe.service.GamePlayService;
+import com.alex.restapi.tictactoe.service.GamePlayServiceImp;
 
 
 public class Util {
@@ -9,7 +11,7 @@ public class Util {
     private char symbol;   // символ Х или 0
     public static Player winnerPlay ; // победитель
     public GameResult gameResult = new GameResult();
-    public GamePlay gamePlay = new GamePlay();
+    public GamePlayService gamePlayService = new GamePlayServiceImp();
     public Step step = new Step();
     public Game game = new Game();
     private boolean isNext = true; // флаг результата
