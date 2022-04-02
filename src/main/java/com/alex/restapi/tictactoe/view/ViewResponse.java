@@ -6,18 +6,22 @@ import com.alex.restapi.tictactoe.utils.Util;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class ViewResponse {
 
     private char[][] boardView;
     private Player player;
     private String responseMessage;
 
-    public ViewResponse(Player player) {
+    public ViewResponse(String responseMessage) {
+        this.responseMessage = responseMessage;
+    }
+
+    public ViewResponse(Player player, String responseMessage) {
         this.player = player;
         this.boardView = Util.boardView;
-
-
+        this.responseMessage = responseMessage;
     }
+
 }

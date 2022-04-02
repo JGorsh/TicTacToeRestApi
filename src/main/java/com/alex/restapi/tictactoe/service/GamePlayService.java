@@ -10,14 +10,8 @@ public interface GamePlayService{
 
     public GamePlay getGamePlayById(Long id);
 
-    //List<Player> getAllGamePlayPlayers();
+    //public List<Player> getAllGamePlayByPlayerId(Long playerId);
 
-    //List<Gameplay> getAllGameplayByPlayerId(Long playerId);
-
-    //Gameplay createGameplay(GameplayJson request);
-
-    //Gameplay save(Gameplay gameplay);
-
-    //Gameplay addPlayer(GameplayJson request);
+    public GamePlay save(GamePlay gameplay);
 
 }

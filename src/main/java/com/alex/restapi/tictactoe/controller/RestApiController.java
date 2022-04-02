@@ -25,12 +25,20 @@ public class RestApiController {
     GameService gameService;
     @Autowired
     GamePlayService gamePlayService;
-    Util util;
 
-//    @RequestMapping(value = "/gameplay", method = RequestMethod.GET)
-//    public GamePlay getGameplay (){
-//        return util.gamePlay;
-//    }
+    Game game;
+    GamePlay gamePlay;
+
+
+    @RequestMapping(value = "/gameplay", method = RequestMethod.GET)
+    public GamePlay getGameplay (){
+        gamePlay = new GamePlay();
+        game = new Game();
+        Game gameSave = gameService.saveGame(game);
+        gamePlay.setGame(gameSave);
+        gamePlayService.save(gamePlay);
+        return gamePlay;
+    }
 
     @RequestMapping(value = "/gameplay/{id}", method = RequestMethod.GET)
     public GamePlay getGameplayById (@PathVariable Long id){
@@ -50,65 +58,20 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
     public char[][] getGame (){
-        return util.boardView;
+        return Util.boardView;
     }
 
     @RequestMapping(value = "/gameplay/game/{currentPlayerId}/{position}", method = RequestMethod.GET)
     public ViewResponse getGamePosition (@PathVariable Long currentPlayerId, @PathVariable int position){
+
         Player player = playerService.getPlayer(currentPlayerId);
-        util.choicePosition(util.boardView, position,player);
-        return stepService.setStep(player,position);
-
-
-//        Model.stepList.add(step);
-//        Model.choicePosition(Model.boardView, position, currentPlayer);
-//        Model.moveList.add(position);
-//
-//        SaveParseJSON saveParseJSON = new SaveParseJSON();
-//
-//        if (Model.checkProgress('X')) {
-//            Model.winner = Model.firstPlayer;
-//            Model.winnerPlay = Model.onePlay;
-//            //Player winner = playerRepository.findById(1).orElse(null);
-//            gameResult.setWinner(Model.winnerPlay);
-//            gameResultRepository.save(gameResult);
-//
-//            game.setStepList((List<Step>) stepRepository.findAll());
-//            gameRepository.save(game);
-//
-//            saveParseJSON.save();
-//            View.responseMessageView = "Победил первый игрок! Результаты игры сохранены!";
-//        }
-//
-//        if (Model.checkProgress('0')) {
-//            Model.winner = Model.secondPlayer;
-//            Model.winnerPlay = Model.twoPlay;
-//            //Player winner = playerRepository.findById(2).orElse(null);
-//            gameResult.setWinner(Model.winnerPlay);
-//            gameResultRepository.save(gameResult);
-//
-//            game.setStepList(Model.stepList);
-//            gameRepository.save(game);
-//
-//            saveParseJSON.save();
-//            View.responseMessageView = "Победил второй игрок! Результаты игры сохранены!";
-//        }
-//
-//        if (Model.moveList.size() == 9) {
-//            Model.winner = "Ничья!";
-//            Model.winnerPlay = null;
-//            gameResult.setWinner(null);
-//            gameResultRepository.save(gameResult);
-//
-//            game.setStepList(Model.stepList);
-//            gameRepository.save(game);
-//
-//            saveParseJSON.save();
-//            View.responseMessageView = "Ничья! Результаты игры сохранены!";
-//        }
-//
-//        ViewResponse view = new ViewResponse();
-//        return view;
+        Util.choicePosition(Util.boardView, position,player);
+        stepService.saveStep(player,position);
+        ViewResponse viewResponse = Util.progressHandler(player);
+        if (Util.winnerPlay!=null){
+            gamePlay.setGameResult(gameResultService.save(gameResultService.create(player)));
+        }
+        return viewResponse;
     }
 //
 //    @RequestMapping(value = "/gameplay/init", method = RequestMethod.GET)

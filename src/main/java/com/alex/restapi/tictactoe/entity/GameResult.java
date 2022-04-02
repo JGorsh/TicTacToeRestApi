@@ -9,10 +9,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table
 public class GameResult {
@@ -30,4 +26,22 @@ public class GameResult {
             mappedBy = "gameResult")
     private GamePlay gamePlay;
 
+    public GameResult() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
 }

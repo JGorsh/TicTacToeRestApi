@@ -2,19 +2,19 @@ package com.alex.restapi.tictactoe.utils;
 
 
 import com.alex.restapi.tictactoe.entity.*;
-import com.alex.restapi.tictactoe.service.GamePlayService;
-import com.alex.restapi.tictactoe.service.GamePlayServiceImp;
+import com.alex.restapi.tictactoe.service.GameResultService;
+import com.alex.restapi.tictactoe.view.ViewResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class Util {
 
-    private char symbol;   // символ Х или 0
+    @Autowired
+    GameResultService gameResultService;
+
     public static Player winnerPlay ; // победитель
-    public GameResult gameResult = new GameResult();
-    public GamePlayService gamePlayService = new GamePlayServiceImp();
-    public Step step = new Step();
-    public Game game = new Game();
     private boolean isNext = true; // флаг результата
+    public static int count; // запись количества ходов
     public static char[][] boardView = {
             {'|', '1', '|', '2', '|', '3', '|'},
             {' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -75,6 +75,22 @@ public class Util {
                 boardView[4][5] = symbol;
                 break;
         }
+    }
+
+    public static ViewResponse progressHandler(Player player){
+        count++;
+        String message = "Продолжайте игру!";
+        if(Util.checkProgress(player.getSymbol()))
+        {
+            message = "Победитель " + player.getName();
+            Util.winnerPlay = player;
+            return new ViewResponse(player, message);
+        }
+        if (Util.count==9){
+            message = "Ничья!";
+            return new ViewResponse(message);
+        }
+        return new ViewResponse(player, message);
     }
 
 //    //сброс переменных при выборе: продолжить игру
