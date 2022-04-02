@@ -2,6 +2,7 @@ package com.alex.restapi.tictactoe.view;
 
 
 import com.alex.restapi.tictactoe.entity.Player;
+import com.alex.restapi.tictactoe.utils.Util;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +14,12 @@ public class ViewResponseParse {
 
     private List<char[][]> board;
     private Player winnerPlay;
+    Util util = new Util();
 
     public ViewResponseParse() {
 
-        this.board = com.alex.tictactoe.view.GameBoard.list;
-        this.winnerPlay = Model.winnerPlay;
+        this.board = GameBoard.list;
+        this.winnerPlay = util.winnerPlay;
 
     }
 

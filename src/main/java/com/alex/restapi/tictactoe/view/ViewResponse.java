@@ -17,7 +17,7 @@ public class ViewResponse {
 
     public ViewResponse() {
         this.boardView = util.boardView;
-        this.responseMessage = View.responseMessageView;
+        //this.responseMessage = View.responseMessageView;
         this.winnerPlay = util.winnerPlay;
 
     }

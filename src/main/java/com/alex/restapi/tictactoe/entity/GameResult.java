@@ -27,7 +27,7 @@ public class GameResult {
     public Player winner; // победитель
 
     @OneToOne(cascade = CascadeType.ALL,
-            mappedBy = "result")
+            mappedBy = "gameResult")
     private GamePlay gamePlay;
 
 }

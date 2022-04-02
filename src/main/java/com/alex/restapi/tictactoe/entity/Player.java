@@ -2,11 +2,10 @@ package com.alex.restapi.tictactoe.entity;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +22,10 @@ public class Player {
 
     @Column
     public String symbol;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gamePlay_id")
+    private GamePlay gamePlay;
 
     public int getId() {
         return id;
