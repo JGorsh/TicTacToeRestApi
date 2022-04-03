@@ -20,7 +20,7 @@ public class Game {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     public List<Step> stepList; // список шагов
 
-    //@JsonIgnore
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "game_id")
     private GamePlay gamePlay;

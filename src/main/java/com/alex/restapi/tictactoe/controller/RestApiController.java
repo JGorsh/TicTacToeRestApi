@@ -7,8 +7,6 @@ import com.alex.restapi.tictactoe.utils.Util;
 import com.alex.restapi.tictactoe.view.ViewResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,8 +29,6 @@ public class RestApiController {
     GameResult gameResult;
     Step step;
     Player player;
-    //List<Step> steps = new ArrayList<>();
-
 
     @RequestMapping(value = "/gameplay", method = RequestMethod.POST)
     public GamePlay getGameplay (){
@@ -108,8 +104,24 @@ public class RestApiController {
     public String initGame () {
         Util.initBoard();
         player = null;
-        //steps = new ArrayList<>();
         return "Можно начать новую игру!";
+    }
+
+    @RequestMapping(value = "/gameplay/{id}/continue", method = RequestMethod.GET)
+    public ViewResponse getGameplayByIdAndContinue (@PathVariable Long id){
+        Util.initBoard();
+        player = null;
+        gamePlay = gamePlayService.getGamePlayById(id);
+        game = gamePlay.getGame();
+        List<Step> steps = gamePlay.getGame().getStepList();
+
+        for(Step step : steps){
+            Util.choicePosition(Util.boardView, step.getPlayerPosition(),step.getPlayer());
+            player = step.getPlayer();
+        }
+        ViewResponse viewResponse = Util.progressHandler(player);
+
+        return viewResponse;
     }
 
 //    @RequestMapping(value = "/gameplay/archive", method = RequestMethod.POST)

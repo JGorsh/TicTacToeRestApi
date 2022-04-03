@@ -1,11 +1,9 @@
 package com.alex.restapi.tictactoe.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import javax.persistence.*;
 
@@ -13,6 +11,7 @@ import javax.persistence.*;
 @Table
 public class GameResult {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -22,7 +21,7 @@ public class GameResult {
     @JoinColumn(name = "winner_id")
     public Player winner; // победитель
 
-    //@OneToOne(cascade = CascadeType.ALL,mappedBy = "gameResult")
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "game_paly_id")
     private GamePlay gamePlay;
