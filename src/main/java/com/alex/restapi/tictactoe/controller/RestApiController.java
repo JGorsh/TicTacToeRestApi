@@ -29,11 +29,11 @@ public class RestApiController {
     @Autowired
     GamePlayService gamePlayService;
 
-    Game game;
-    GamePlay gamePlay;
-    GameResult gameResult;
-    Step step;
-    Player player;
+    public Game game;
+    public GamePlay gamePlay;
+    public GameResult gameResult;
+    public Step step;
+    public Player player;
 
     @RequestMapping(value = "/gameplay", method = RequestMethod.POST)
     public GamePlay getGameplay (){
@@ -127,12 +127,13 @@ public class RestApiController {
             gamePlay.setGameResult(gameResult);
             gamePlayService.save(gamePlay);
             new SaveParseJSON().save(gamePlayService.getGamePlayById(gamePlay.getId()));
+            new SaveParseXML().save(gamePlayService.getGamePlayById(gamePlay.getId()));
         }
 
         return viewResponse;
     }
 
-    @RequestMapping(value = "/gameplay/init", method = RequestMethod.GET)
+    @RequestMapping(value = "/gameplay/init", method = RequestMethod.POST)
     public String initGame () {
         Util.initBoard();
         player = null;
