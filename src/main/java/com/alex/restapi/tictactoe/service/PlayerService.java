@@ -13,4 +13,6 @@ public interface PlayerService{
 
     public List<Player> getAllPlayers();
 
+    public List<Player> getAllPlayersByGamePlayId(Long id);
+
 }

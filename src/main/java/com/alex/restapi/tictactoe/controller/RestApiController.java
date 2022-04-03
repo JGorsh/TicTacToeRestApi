@@ -3,6 +3,7 @@ package com.alex.restapi.tictactoe.controller;
 
 import com.alex.restapi.tictactoe.entity.*;
 import com.alex.restapi.tictactoe.exceptions.DataException;
+import com.alex.restapi.tictactoe.exceptions.ValueException;
 import com.alex.restapi.tictactoe.service.SaveParseJSON;
 import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
@@ -57,6 +58,9 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/player/{playerName}", method = RequestMethod.GET)
     public Player savePlayers (@PathVariable String playerName){
+        if (playerService.getAllPlayersByGamePlayId(gamePlay.getId()).size()==2){
+            throw new ValueException("Вы пытаетесь создать больше 2х игроков в текущей игре!");
+        }
         if(player==null){
             player = new Player(playerName,'X');
         }
@@ -81,24 +85,40 @@ public class RestApiController {
         return playerService.getAllPlayers();
     }
 
-//    @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
-//    public char[][] getGame (){
-//        return Util.boardView;
-//    }
+    @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
+    public char[][] getGame (){
+        return Util.boardView;
+    }
 
     @RequestMapping(value = "/gameplay/game/{currentPlayerId}/{position}", method = RequestMethod.GET)
     public ViewResponse getGamePosition (@PathVariable Long currentPlayerId, @PathVariable int position){
 
         Player currentPlayer = playerService.getPlayer(currentPlayerId);
-        Util.choicePosition(Util.boardView, position,currentPlayer);
 
-        step = new Step(currentPlayer, position);
-        step.setGame(game);
-        stepService.saveStep(step);
-        gamePlay.setGame(game);
-        gamePlayService.save(gamePlay);
+        if (Util.isWin){
+            if(currentPlayer==null){
+                throw new DataException("Игрока с id ="+currentPlayerId + " не существует!");
+            }
+
+            List<Integer> listCurrentPosition = stepService.findAllPositions(game.getId());
+            if(!Util.listVar.contains(position)||listCurrentPosition.contains(position)){
+                throw new ValueException("Введена неверная позиция " + position);
+            }
+
+            Util.choicePosition(Util.boardView, position,currentPlayer);
+
+            step = new Step(currentPlayer, position);
+            step.setGame(game);
+            stepService.saveStep(step);
+            gamePlay.setGame(game);
+            gamePlayService.save(gamePlay);
+        }
+        else {
+            throw new ValueException("Игра закончена, создайте новую игру!");
+        }
 
         ViewResponse viewResponse = Util.progressHandler(currentPlayer);
+
         if (Util.winnerPlay!=null){
 
             gameResult = gameResultService.create(currentPlayer);
@@ -121,6 +141,12 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/{id}/continue", method = RequestMethod.GET)
     public ViewResponse getGameplayByIdAndContinue (@PathVariable Long id){
+
+        gamePlay = gamePlayService.getGamePlayById(id);
+        if(gamePlay==null){
+            throw new DataException("Игры с id ="+id + " не существует!");
+        }
+
         Util.initBoard();
         player = null;
         gamePlay = gamePlayService.getGamePlayById(id);
@@ -138,6 +164,11 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/archive", method = RequestMethod.POST)
     public ViewResponseParse getOnePlayer (@RequestBody Root root){
+
+        if(root.getGamePlay()==null||root.getGamePlay().getPlayers()==null||
+                root.getGamePlay().getGame()==null||root.getGamePlay().getGame().getStepList()==null){
+            throw new ValueException("Неверный формат JSON!");
+        }
 
         Util.winnerPlay = root.getGamePlay().getGameResult().getWinner();
 

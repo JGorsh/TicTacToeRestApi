@@ -2,10 +2,12 @@ package com.alex.restapi.tictactoe.service;
 
 import com.alex.restapi.tictactoe.entity.GamePlay;
 import com.alex.restapi.tictactoe.entity.Player;
+import com.alex.restapi.tictactoe.entity.Step;
 import com.alex.restapi.tictactoe.exceptions.InvalidIdException;
 import com.alex.restapi.tictactoe.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,5 +34,10 @@ public class PlayerServiceImp implements PlayerService{
     @Override
     public List<Player> getAllPlayers() {
         return playerRepository.findAll();
+    }
+
+    @Override
+    public List<Player> getAllPlayersByGamePlayId(Long id) {
+        return playerRepository.findAllByGamePlay_Id(id);
     }
 }

@@ -6,6 +6,10 @@ import com.alex.restapi.tictactoe.service.GameResultService;
 import com.alex.restapi.tictactoe.view.ViewResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class Util {
 
@@ -13,8 +17,9 @@ public class Util {
     GameResultService gameResultService;
 
     public static Player winnerPlay ; // победитель
-    private boolean isNext = true; // флаг результата
+    public static boolean isWin = true; // флаг результата
     public static int count; // запись количества ходов
+    public static List<Integer> listVar = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9));
     public static char[][] boardView = {
             {'|', '1', '|', '2', '|', '3', '|'},
             {' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -84,9 +89,11 @@ public class Util {
         {
             message = "Победитель " + player.getName();
             Util.winnerPlay = player;
+            isWin = false;
             return new ViewResponse(player, message);
         }
         if (Util.count==9){
+            isWin = false;
             message = "Ничья!";
             return new ViewResponse(message);
         }
@@ -104,6 +111,7 @@ public class Util {
         };
         boardView = boardViewClean;
         winnerPlay = null;
+        isWin = true;
         count=0;
     }
 
