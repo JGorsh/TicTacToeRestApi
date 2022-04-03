@@ -2,6 +2,7 @@ package com.alex.restapi.tictactoe.controller;
 
 
 import com.alex.restapi.tictactoe.entity.*;
+import com.alex.restapi.tictactoe.exceptions.DataException;
 import com.alex.restapi.tictactoe.service.SaveParseJSON;
 import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
@@ -47,7 +48,11 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/{id}", method = RequestMethod.GET)
     public GamePlay getGameplayById (@PathVariable Long id){
-        return gamePlayService.getGamePlayById(id);
+        GamePlay gamePlayId = gamePlayService.getGamePlayById(id);
+        if(gamePlayId==null){
+            throw new DataException("Игры с id ="+id + " не существует!");
+        }
+        return gamePlayId;
     }
 
     @RequestMapping(value = "/gameplay/player/{playerName}", method = RequestMethod.GET)
@@ -64,7 +69,11 @@ public class RestApiController {
 
     @RequestMapping(value = "/gameplay/players/{id}", method = RequestMethod.GET)
     public Player getPlayer(@PathVariable Long id) {
-        return playerService.getPlayer(id);
+        Player playerById = playerService.getPlayer(id);
+        if(playerById==null){
+            throw new DataException("Игрока с id ="+id + " не существует!");
+        }
+        return playerById;
     }
 
     @RequestMapping(value = "/gameplay/players", method = RequestMethod.GET)
@@ -72,10 +81,10 @@ public class RestApiController {
         return playerService.getAllPlayers();
     }
 
-    @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
-    public char[][] getGame (){
-        return Util.boardView;
-    }
+//    @RequestMapping(value = "/gameplay/game", method = RequestMethod.GET)
+//    public char[][] getGame (){
+//        return Util.boardView;
+//    }
 
     @RequestMapping(value = "/gameplay/game/{currentPlayerId}/{position}", method = RequestMethod.GET)
     public ViewResponse getGamePosition (@PathVariable Long currentPlayerId, @PathVariable int position){

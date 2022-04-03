@@ -7,6 +7,7 @@ import com.alex.restapi.tictactoe.repository.GamePlayRepository;
 import com.alex.restapi.tictactoe.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
 
 
 public class GamePlayServiceImp implements GamePlayService{
@@ -19,8 +20,12 @@ public class GamePlayServiceImp implements GamePlayService{
 
     @Override
     public GamePlay getGamePlayById(Long id) {
-        GamePlay gamePlay = gamePlayRepository.findById(id).orElseThrow(() -> new InvalidIdException("invalid id"));
-        return gamePlay;
+        GamePlay gamePlayOne = null;
+        Optional<GamePlay> gamePlay = gamePlayRepository.findById(id);
+        if(gamePlay.isPresent()){
+            gamePlayOne = gamePlay.get();
+        }
+        return gamePlayOne;
     }
 
 

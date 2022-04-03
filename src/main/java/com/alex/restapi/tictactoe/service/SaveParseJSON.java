@@ -34,32 +34,4 @@ public class SaveParseJSON implements SaveParseInterface {
             e.printStackTrace();
         }
     }
-
-//    @Override
-//    public void parse(String url){
-//        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-//
-//        JsonNode nodePlayers = null;
-//        JsonNode nodeStep = null;
-//        JsonNode nodeGameResult = null;
-//        try {
-//            nodePlayers = objectMapper.readTree(new File(url)).get("GamePlay").get("Player");
-//            nodeStep = objectMapper.readTree(new File(url)).get("GamePlay").get("Game").get("Step");
-//            nodeGameResult = objectMapper.readTree(new File(url)).get("GamePlay").get("GameResult").get("Player");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        GamePlay gamePlay = new GamePlay();
-//        try {
-//            gamePlay.setPlayers(Arrays.asList(objectMapper.readValue(nodePlayers.toString(), Player[].class)));
-//            Model.stepList = Arrays.asList(objectMapper.readValue(nodeStep.toString(), Step[].class));
-//            Model.winnerPlay = objectMapper.readValue(nodeGameResult.toString(),Player.class);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        Model.onePlay = gamePlay.getPlayers().get(0);
-//        Model.firstPlayer = Model.onePlay.getName();
-//        Model.twoPlay = gamePlay.getPlayers().get(1);
-//        Model.secondPlayer = Model.twoPlay.getName();
-//    }
 }
