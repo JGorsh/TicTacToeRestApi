@@ -20,7 +20,7 @@ TicTacToeRestApi (SpringBoot, H2)
   
   - "/gameplay/init" (POST) -- для сброса игры
   
-  -"/gameplay/{id}/continue" (GET) -- возвращение игры по id (последний ход), можно продолжить играть, если нет результата
+  - "/gameplay/{id}/continue" (GET) -- возвращение игры по id (последний ход), можно продолжить играть, если нет результата
   
   - "/gameplay/archive" (POST) -- в body Json с архивом игры, в ответе история игры и результат
   
