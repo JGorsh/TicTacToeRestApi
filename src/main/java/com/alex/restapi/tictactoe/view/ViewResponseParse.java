@@ -14,12 +14,11 @@ public class ViewResponseParse {
 
     private List<char[][]> board;
     private Player winnerPlay;
-    Util util = new Util();
 
     public ViewResponseParse() {
 
         this.board = GameBoard.list;
-        this.winnerPlay = util.winnerPlay;
+        this.winnerPlay = Util.winnerPlay;
 
     }
 

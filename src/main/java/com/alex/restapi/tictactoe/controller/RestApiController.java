@@ -2,9 +2,11 @@ package com.alex.restapi.tictactoe.controller;
 
 
 import com.alex.restapi.tictactoe.entity.*;
+import com.alex.restapi.tictactoe.service.SaveParseJSON;
 import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
 import com.alex.restapi.tictactoe.view.ViewResponse;
+import com.alex.restapi.tictactoe.view.ViewResponseParse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -93,8 +95,8 @@ public class RestApiController {
             gameResult.setGamePlay(gamePlay);
             gameResultService.save(gameResult);
             gamePlay.setGameResult(gameResult);
-
             gamePlayService.save(gamePlay);
+            new SaveParseJSON().save(gamePlayService.getGamePlayById(gamePlay.getId()));
         }
 
         return viewResponse;
@@ -124,23 +126,23 @@ public class RestApiController {
         return viewResponse;
     }
 
-//    @RequestMapping(value = "/gameplay/archive", method = RequestMethod.POST)
-//    public ViewResponseParse getOnePlayer (@RequestBody Root root){
-//
-//        Model.onePlay = root.getGamePlay().getPlayers().get(0);
-//        Model.firstPlayer = Model.onePlay.getName();
-//        Model.twoPlay = root.getGamePlay().getPlayers().get(1);
-//        Model.secondPlayer = Model.twoPlay.getName();
-//        Model.winnerPlay = root.getGamePlay().gameResult.getWinner();
-//        Model.winner = Model.winnerPlay.getName();
-//
-//
-//        for(Step step : root.getGamePlay().getGame().stepList) {
-//            Model.choicePosition(Model.boardView, step.getPlayerPosition(), step.getPlayer().getName());
-//            GameBoard.printBoardBody(Model.boardView);
-//
-//        }
-//        return new ViewResponseParse();
-//    }
+    @RequestMapping(value = "/gameplay/archive", method = RequestMethod.POST)
+    public ViewResponseParse getOnePlayer (@RequestBody Root root){
+
+        Model.onePlay = root.getGamePlay().getPlayers().get(0);
+        Model.firstPlayer = Model.onePlay.getName();
+        Model.twoPlay = root.getGamePlay().getPlayers().get(1);
+        Model.secondPlayer = Model.twoPlay.getName();
+        Model.winnerPlay = root.getGamePlay().gameResult.getWinner();
+        Model.winner = Model.winnerPlay.getName();
+
+
+        for(Step step : root.getGamePlay().getGame().stepList) {
+            Model.choicePosition(Model.boardView, step.getPlayerPosition(), step.getPlayer().getName());
+            GameBoard.printBoardBody(Model.boardView);
+
+        }
+        return new ViewResponseParse();
+    }
 
 }
