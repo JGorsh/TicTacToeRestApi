@@ -2,6 +2,8 @@ package com.alex.restapi.tictactoe.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 
@@ -20,7 +22,8 @@ public class Step {
     @Column
     private int playerPosition;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "game_id")
     private Game game;
 

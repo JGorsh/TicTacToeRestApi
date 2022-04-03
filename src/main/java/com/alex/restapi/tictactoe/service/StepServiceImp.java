@@ -1,6 +1,5 @@
 package com.alex.restapi.tictactoe.service;
 
-import com.alex.restapi.tictactoe.entity.Player;
 import com.alex.restapi.tictactoe.entity.Step;
 import com.alex.restapi.tictactoe.repository.StepRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,11 +5,10 @@ import com.alex.restapi.tictactoe.entity.*;
 import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
 import com.alex.restapi.tictactoe.view.ViewResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,12 +31,18 @@ public class RestApiController {
     GameResult gameResult;
     Step step;
     Player player;
+    //List<Step> steps = new ArrayList<>();
 
 
     @RequestMapping(value = "/gameplay", method = RequestMethod.POST)
     public GamePlay getGameplay (){
         gamePlay = new GamePlay();
+        game = new Game();
+        gameResult = new GameResult();
+        gameResult.setGamePlay(gamePlay);
+        game.setGamePlay(gamePlay);
         gamePlayService.save(gamePlay);
+        gameService.saveGame(game);
         return gamePlay;
     }
 
@@ -76,23 +81,23 @@ public class RestApiController {
     @RequestMapping(value = "/gameplay/game/{currentPlayerId}/{position}", method = RequestMethod.GET)
     public ViewResponse getGamePosition (@PathVariable Long currentPlayerId, @PathVariable int position){
 
-        Player player = playerService.getPlayer(currentPlayerId);
-        Util.choicePosition(Util.boardView, position,player);
+        Player currentPlayer = playerService.getPlayer(currentPlayerId);
+        Util.choicePosition(Util.boardView, position,currentPlayer);
 
-        game = new Game();
-
-        step = new Step(player, position);
+        step = new Step(currentPlayer, position);
         step.setGame(game);
         stepService.saveStep(step);
-        gameService.saveGame(game);
-
         gamePlay.setGame(game);
         gamePlayService.save(gamePlay);
 
-        ViewResponse viewResponse = Util.progressHandler(player);
+        ViewResponse viewResponse = Util.progressHandler(currentPlayer);
         if (Util.winnerPlay!=null){
-            gameResult = gameResultService.save(gameResultService.create(player));
+
+            gameResult = gameResultService.create(currentPlayer);
+            gameResult.setGamePlay(gamePlay);
+            gameResultService.save(gameResult);
             gamePlay.setGameResult(gameResult);
+
             gamePlayService.save(gamePlay);
         }
 
@@ -103,6 +108,7 @@ public class RestApiController {
     public String initGame () {
         Util.initBoard();
         player = null;
+        //steps = new ArrayList<>();
         return "Можно начать новую игру!";
     }
 

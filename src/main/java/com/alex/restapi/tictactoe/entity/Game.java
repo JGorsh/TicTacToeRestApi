@@ -1,12 +1,11 @@
 package com.alex.restapi.tictactoe.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,11 +17,12 @@ public class Game {
     long id;
 
     @JsonProperty("Step")
-    @OneToMany(mappedBy = "game")
-    public List<Step> stepList = new ArrayList<>(); // список шагов
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    public List<Step> stepList; // список шагов
 
-    @OneToOne(cascade = CascadeType.ALL,
-            mappedBy = "game")
+    //@JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn (name = "game_id")
     private GamePlay gamePlay;
 
     public Game() {

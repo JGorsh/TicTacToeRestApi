@@ -22,8 +22,9 @@ public class GameResult {
     @JoinColumn(name = "winner_id")
     public Player winner; // победитель
 
-    @OneToOne(cascade = CascadeType.ALL,
-            mappedBy = "gameResult")
+    //@OneToOne(cascade = CascadeType.ALL,mappedBy = "gameResult")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_paly_id")
     private GamePlay gamePlay;
 
     public GameResult() {
@@ -43,5 +44,13 @@ public class GameResult {
 
     public void setWinner(Player winner) {
         this.winner = winner;
+    }
+
+    public GamePlay getGamePlay() {
+        return gamePlay;
+    }
+
+    public void setGamePlay(GamePlay gamePlay) {
+        this.gamePlay = gamePlay;
     }
 }
