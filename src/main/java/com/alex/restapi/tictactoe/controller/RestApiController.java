@@ -5,6 +5,7 @@ import com.alex.restapi.tictactoe.entity.*;
 import com.alex.restapi.tictactoe.service.SaveParseJSON;
 import com.alex.restapi.tictactoe.service.*;
 import com.alex.restapi.tictactoe.utils.Util;
+import com.alex.restapi.tictactoe.view.GameBoard;
 import com.alex.restapi.tictactoe.view.ViewResponse;
 import com.alex.restapi.tictactoe.view.ViewResponseParse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,18 +130,11 @@ public class RestApiController {
     @RequestMapping(value = "/gameplay/archive", method = RequestMethod.POST)
     public ViewResponseParse getOnePlayer (@RequestBody Root root){
 
-        Model.onePlay = root.getGamePlay().getPlayers().get(0);
-        Model.firstPlayer = Model.onePlay.getName();
-        Model.twoPlay = root.getGamePlay().getPlayers().get(1);
-        Model.secondPlayer = Model.twoPlay.getName();
-        Model.winnerPlay = root.getGamePlay().gameResult.getWinner();
-        Model.winner = Model.winnerPlay.getName();
+        Util.winnerPlay = root.getGamePlay().getGameResult().getWinner();
 
-
-        for(Step step : root.getGamePlay().getGame().stepList) {
-            Model.choicePosition(Model.boardView, step.getPlayerPosition(), step.getPlayer().getName());
-            GameBoard.printBoardBody(Model.boardView);
-
+        for(Step step : root.getGamePlay().getGame().getStepList()) {
+            Util.choicePosition(Util.boardView, step.getPlayerPosition(), step.getPlayer());
+            GameBoard.printBoardBody(Util.boardView);
         }
         return new ViewResponseParse();
     }
