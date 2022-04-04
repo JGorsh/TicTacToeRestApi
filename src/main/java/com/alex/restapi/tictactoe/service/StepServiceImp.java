@@ -11,10 +11,6 @@ public class StepServiceImp implements StepService{
 
     @Autowired
     StepRepository stepRepository;
-    @Autowired
-    GameResultService gameResultService;
-    @Autowired
-    GamePlayService gamePlayService;
 
     @Override
     public Step saveStep(Step step) {
