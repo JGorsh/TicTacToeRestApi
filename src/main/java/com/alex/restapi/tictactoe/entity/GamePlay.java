@@ -22,17 +22,14 @@ public class GamePlay {
 
     @JsonProperty("Player")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gamePlay")
-    //@OneToMany(cascade = CascadeType.ALL)
     private List<Player> players = new ArrayList<>();
 
     @JsonProperty("Game")
-    //@OneToOne(cascade = CascadeType.ALL, mappedBy = "gamePlay")
     @OneToOne
     @JoinColumn(name = "game_id")
     private Game game;
 
     @JsonProperty("GameResult")
-    //@OneToOne(cascade = CascadeType.ALL, mappedBy = "gamePlay")
     @OneToOne
     @JoinColumn(name = "game_result_id")
     private GameResult gameResult;
