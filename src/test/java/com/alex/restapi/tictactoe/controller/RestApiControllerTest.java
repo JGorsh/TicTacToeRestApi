@@ -3,6 +3,7 @@ package com.alex.restapi.tictactoe.controller;
 import com.alex.restapi.tictactoe.entity.GamePlay;
 import com.alex.restapi.tictactoe.entity.GameResult;
 import com.alex.restapi.tictactoe.entity.Player;
+import com.alex.restapi.tictactoe.entity.Step;
 import com.alex.restapi.tictactoe.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,13 @@ class RestApiControllerTest {
     GamePlayService gamePlayService;
     @Autowired
     private MockMvc mockMvc;
+    @Mock
+    Player player;
+    @Mock
+    GamePlay gamePlay;
+    @Mock
+    Step step;
+
 
     @InjectMocks
     RestApiController restApiController;
@@ -88,16 +96,11 @@ class RestApiControllerTest {
 
     @Test
     void savePlayers() throws Exception {
-//
-//        Player player = new Player("1",'1');
-//        GamePlay gamePlay = new GamePlay();
-//        player.setGamePlay(gamePlay);
-//        when(playerService.savePlayer(player)).thenReturn(player);
-//
-//        HttpServletResponse response = mockMvc.perform(get("/gameplay/player/{playerName}","1")).andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn().getResponse();
-//
-//        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        HttpServletResponse response = mockMvc.perform(get("/gameplay/player/{playerName}", "1")).andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
@@ -125,23 +128,17 @@ class RestApiControllerTest {
     }
 
     @Test
-    void getGame() {
-
+    void getGame() throws Exception {
+        HttpServletResponse response = mockMvc.perform(get("/gameplay/game")).andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn().getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 
-    @Test
-    void getGamePosition() {
-    }
 
     @Test
-    void initGame() {
-    }
-
-    @Test
-    void getGameplayByIdAndContinue() {
-    }
-
-    @Test
-    void getOnePlayer() {
+    void initGame() throws Exception {
+        HttpServletResponse response = mockMvc.perform(post("/gameplay/init")).andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.ALL)).andReturn().getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 }
